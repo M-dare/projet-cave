@@ -4,25 +4,27 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BoissonController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 //ACCÈS PUBLIC
-// Tout le monde peut voir la page d'accueil
 Route::get('/', function () {
     return view('welcome');
 });
 
 //LOGIQUE AUTHENTIFICATION
-// Cette ligne crée : Inscription, Connexion, Déconnexion, et Récupération de mot de passe.
 Auth::routes();
 
-//ESPACE SÉCURISÉ 
-// Le middleware 'auth' vérifie si l'utilisateur est connecté avant de le laisser passer.
+//ESPACE SÉCURISÉ (Utilisateurs connectés)
 Route::middleware(['auth'])->group(function () {
     
-    // Page d'accueil après connexion (Dashboard)
+    // Dashboard (Ton travail)
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Gestion des boissons (interdit aux personnes non connectées)
+    // Gestion des boissons (Ton travail)
     Route::resource('boissons', BoissonController::class);
+
+    // Gestion du Profil (Le travail de ton camarade intégré ici)
+    Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profil', [ProfileController::class, 'update'])->name('profile.update');
     
 });
