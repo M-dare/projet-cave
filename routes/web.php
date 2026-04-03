@@ -1,21 +1,28 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// On importe le contrôleur que vous venez de créer
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BoissonController;
-//  Web Routes
-// Page d'accueil du site
+use App\Http\Controllers\HomeController;
+
+//ACCÈS PUBLIC
+// Tout le monde peut voir la page d'accueil
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route "Resource" : Elle crée 7 routes en 1 seule ligne pour vos boissons !
-// (index, create, store, show, edit, update, destroy)
-Route::resource('boissons', BoissonController::class);
+//LOGIQUE AUTHENTIFICATION
+// Cette ligne crée : Inscription, Connexion, Déconnexion, et Récupération de mot de passe.
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//ESPACE SÉCURISÉ 
+// Le middleware 'auth' vérifie si l'utilisateur est connecté avant de le laisser passer.
+Route::middleware(['auth'])->group(function () {
+    
+    // Page d'accueil après connexion (Dashboard)
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // Gestion des boissons (interdit aux personnes non connectées)
+    Route::resource('boissons', BoissonController::class);
+    
+});
