@@ -41,6 +41,17 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm border-info">
+                                <div class="card-body">
+                                    <h5 class="card-title text-info">👤 Mon Profil</h5>
+                                    <p class="card-text">Modifier vos informations et sécuriser votre compte.</p>
+                                    <a href="{{ route('profile.edit') }}" class="btn btn-outline-info w-100">Modifier mon profil</a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

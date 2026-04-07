@@ -10,44 +10,35 @@ class ProfileController extends Controller
 {
     /**
      * Affiche le formulaire de modification du profil.
-     * Accessible via GET /profil
      */
     public function edit()
     {
-        // On récupère l'utilisateur connecté OU le premier de la base pour le test
-        $user = Auth::user() ?: User::first();
-
+        $user = Auth::user();
         return view('profile.edit', compact('user'));
     }
 
     /**
-     * Enregistre les modifications dans la base de données.
-     * Accessible via POST /profil
+     * Met à jour le profil et le mot de passe.
      */
     public function update(Request $request)
     {
-        // On identifie l'utilisateur à modifier
-        $user = Auth::user() ?: User::first();
+        $user = Auth::user();
 
-        // Sécurité : Si aucun utilisateur n'existe du tout
-        if (!$user) {
-            return back()->with('status', 'Erreur : Aucun utilisateur trouvé en base de données.');
-        }
-
-        // Validation des données du formulaire
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:6|confirmed',
         ]);
 
-        // Mise à jour des informations
         $user->name = $request->input('name');
         $user->email = $request->input('email');
 
-        // Sauvegarde dans MySQL
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
         $user->save();
 
-        // Retour à la page avec un message de succès
-        return back()->with('status', 'Profil mis à jour avec succès !');
+        return back()->with('status', 'Profil et mot de passe mis à jour !');
     }
 }
