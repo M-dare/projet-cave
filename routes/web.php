@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BoissonController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController; // Importation propre
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VenteController; // Importation du nouveau contrôleur
 
 // --- ACCÈS PUBLIC ---
 Route::get('/', function () {
@@ -21,15 +22,17 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Gestion des boissons (Ton travail)
+    // Gestion des boissons
     Route::resource('boissons', BoissonController::class);
 
-    // Gestion du Profil (Travail intégré hier)
+    // Gestion du Profil
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profil', [ProfileController::class, 'update'])->name('profile.update');
 
-    // MODULE WALID : GESTION DES UTILISATEURS (Sécurisé ici)
+    // MODULE WALID : GESTION DES UTILISATEURS
     Route::resource('users', UserController::class); 
-    // Utiliser resource est plus court et gère index, create, store, edit, update, destroy d'un coup !
+    
+    // MODULE VENTES (Ajouté pour le groupe)
+    Route::resource('ventes', VenteController::class);
     
 });

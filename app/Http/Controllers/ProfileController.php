@@ -8,10 +8,7 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    /**
-     * Affiche le formulaire de modification du profil.
-     * Accessible via GET /profil
-     */
+    // / Affiche le formulaire de modification du profil. Accessible via GET /profil
     public function edit()
     {
         // On récupère l'utilisateur connecté OU le premier de la base pour le test
@@ -20,10 +17,7 @@ class ProfileController extends Controller
         return view('profile.edit', compact('user'));
     }
 
-    /**
-     * Enregistre les modifications dans la base de données.
-     * Accessible via POST /profil
-     */
+    // Enregistre les modifications dans la base de données. Accessible via POST /profil
     public function update(Request $request)
     {
         // On identifie l'utilisateur à modifier
