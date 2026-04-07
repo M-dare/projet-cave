@@ -2,30 +2,33 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-// Vérifie bien que ces fichiers existent dans app/Http/Controllers
 use App\Http\Controllers\BoissonController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 // 1. ACCÈS PUBLIC
 Route::get('/', function () {
     return view('welcome');
 });
 
-// 2. AUTHENTIFICATION (Géré par UI ou Breeze)
+// 2. LOGIQUE AUTHENTIFICATION
 Auth::routes();
 
-// 3. ESPACE SÉCURISÉ (Utilisateurs connectés)
+// 3. ESPACE SÉCURISÉ (Utilisateurs connectés uniquement)
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard (L'adresse sera http://127.0.0.1:8000/home)
+    // Dashboard - Page d'accueil après connexion
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Gestion des boissons (Cave)
+    // Gestion des boissons (Inventaire de la cave)
     Route::resource('boissons', BoissonController::class);
 
-    // Profil (Tes modifications d'aujourd'hui)
+    // Gestion du Profil (Tes modifications Abdoul)
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profil', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Module Walid : Gestion des Utilisateurs
+    Route::resource('users', UserController::class);
 
 });
