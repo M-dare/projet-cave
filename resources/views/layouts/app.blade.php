@@ -26,12 +26,18 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">{{ __('Tableau de Bord') }}</a>
-                            </li>
-                        @endauth
-                    </ul>
+    @auth
+        {{-- Lien vers le Tableau de Bord (Ton travail) --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('home') }}">{{ __('Tableau de Bord') }}</a>
+        </li>
+        
+        {{-- Lien vers la Gestion Utilisateurs (Le travail de Walid) --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('users.index') }}">Gestion Utilisateurs</a>
+        </li>
+    @endauth
+</ul>
 
                     <ul class="navbar-nav ms-auto">
                         @guest
