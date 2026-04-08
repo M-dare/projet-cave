@@ -1,4 +1,19 @@
 @extends('layouts.app')
+<style>
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-10px); /* Soulève la carte de 10px */
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; /* Ajoute une ombre plus forte */
+    }
+    .btn {
+        transition: all 0.3s ease;
+    }
+    .btn:hover {
+        letter-spacing: 1px; /* Écarte légèrement les lettres du bouton */
+    }
+</style>
 
 @section('content')
 <div class="container">
