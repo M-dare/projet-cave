@@ -3,24 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Cave - Groupe 05</title>
+    <title>Distribution en Gros - Groupe 05</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .card-stat { border: none; border-radius: 12px; transition: 0.3s; }
         .card-stat:hover { transform: scale(1.02); }
         #myChart { max-height: 250px; }
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("{{ asset('images/cave_boutique.png') }}");
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            border-radius: 15px;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-dark bg-dark mb-4 shadow-sm">
+    <nav class="navbar navbar-dark bg-dark mb-0 shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('boissons.index') }}">🍷 CAVE DASHBOARD | GROUPE 05</a>
+            <a class="navbar-brand fw-bold" href="{{ route('boissons.index') }}">🚢 CENTRE DE DISTRIBUTION | GROUPE 05</a>
+            @auth
+            <div class="text-white small">Responsable : <strong>{{ auth()->user()->name }}</strong></div>
+            @endauth
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-4">
+        {{-- BANNIÈRE LOGISTIQUE --}}
+        <div class="hero-banner">
+            <div class="text-white">
+                <h1 class="fw-bold display-5">GROUPE 05 - LOGISTIQUE & GROS</h1>
+                <p class="lead">Gestion des stocks de masse et distribution régionale (Burkina Faso)</p>
+            </div>
+        </div>
+
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 {{ session('success') }}
@@ -28,134 +51,75 @@
             </div>
         @endif
 
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="card card-stat bg-primary text-white shadow h-100">
-                            <div class="card-body text-center d-flex flex-column justify-content-center">
-                                <small>Produits différents</small>
-                                <h2 class="fw-bold">{{ $stats['nb_boissons'] }}</h2>
+        {{-- 1. BLOC STATISTIQUES SÉCURISÉ --}}
+        @auth
+            @if(auth()->user()->role === 'admin' && isset($stats))
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card card-stat bg-primary text-white shadow h-100">
+                                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                                        <small>Références en Stock</small>
+                                        <h2 class="fw-bold">{{ $stats['nb_boissons'] ?? 0 }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-stat bg-success text-white shadow h-100">
+                                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                                        <small>Volume Total (Unités)</small>
+                                        <h2 class="fw-bold">{{ $stats['total_stock'] ?? 0 }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card card-stat bg-dark text-warning shadow border-warning border-start border-5">
+                                    <div class="card-body text-center">
+                                        <small>Valeur Inventaire</small>
+                                        <h2 class="fw-bold">{{ number_format($stats['valeur_cave'] ?? 0, 0, ',', ' ') }} FCFA</h2>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card card-stat bg-success text-white shadow h-100">
-                            <div class="card-body text-center d-flex flex-column justify-content-center">
-                                <small>Total Bouteilles</small>
-                                <h2 class="fw-bold">{{ $stats['total_stock'] }}</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card card-stat bg-dark text-warning shadow">
-                            <div class="card-body text-center">
-                                <small>Valeur Totale du Stock</small>
-                                <h2 class="fw-bold">{{ number_format($stats['valeur_cave'], 0, ',', ' ') }} FCFA</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted mb-3">Répartition par Type</h6>
+                    <div class="col-md-4 text-center">
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>
-            </div>
-        </div>
+            @endif
+        @endauth
 
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <form action="{{ route('boissons.index') }}" method="GET" class="d-flex">
-                            <input type="text" name="search" class="form-control me-2" 
-                                   placeholder="Filtrer par nom ou type..." 
-                                   value="{{ request()->search }}">
-                            <button type="submit" class="btn btn-dark px-4">Filtrer</button>
-                            @if(request()->search)
-                                <a href="{{ route('boissons.index') }}" class="btn btn-outline-secondary ms-2">Reset</a>
-                            @endif
-                        </form>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <a href="{{ route('boissons.create') }}" class="btn btn-primary fw-bold">+ AJOUTER</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-0">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="ps-4">Nom</th>
-                            <th>Type</th>
-                            <th>État du Stock</th>
-                            <th>Prix Unitaire</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($boissons as $boisson)
-                            <tr>
-                                <td class="ps-4 fw-bold">{{ $boisson->nom }}</td>
-                                <td><span class="badge bg-light text-dark border">{{ $boisson->type }}</span></td>
-                                <td>
-                                    @if($boisson->quantite <= 0)
-                                        <span class="badge bg-danger px-3">Rupture</span>
-                                    @elseif($boisson->quantite <= 10)
-                                        <span class="badge bg-warning text-dark px-3">Critique: {{ $boisson->quantite }}</span>
-                                    @else
-                                        <span class="badge bg-success px-3">{{ $boisson->quantite }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ number_format($boisson->prix_unitaire, 0, ',', ' ') }} FCFA</td>
-                                <td class="text-center">
-                                    <a href="{{ route('boissons.edit', $boisson->id) }}" class="btn btn-sm btn-info text-white">Éditer</a>
-                                    <form action="{{ route('boissons.destroy', $boisson->id) }}" method="POST" class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ?')">X</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center py-5 text-muted">Aucune boisson.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        {{-- 2. RECHERCHE ET TABLEAU (RESTE DU CODE) --}}
+        <div class="card border-0 shadow-sm mb-4 p-3 text-center">
+            <h4>Accès aux Modules</h4>
+            <div class="d-flex justify-content-center gap-2 mt-3">
+                <a href="{{ route('boissons.index') }}" class="btn btn-dark">Inventaire</a>
+                @if(isset($boissons))
+                    {{-- Si tu as une route vente, ajoute la ici --}}
+                @endif
             </div>
         </div>
     </div>
 
+    {{-- SCRIPT GRAPHIQUE SÉCURISÉ --}}
+    @if(isset($stats))
     <script>
         const ctx = document.getElementById('myChart');
-        new Chart(ctx, {
-            type: 'doughnut', // Type de graphique (Cercle)
-            data: {
-                labels: {!! json_encode($stats['chart_labels']) !!},
-                datasets: [{
-                    data: {!! json_encode($stats['chart_data']) !!},
-                    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6610f2', '#fd7e14'],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom' }
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: {!! json_encode($stats['chart_labels'] ?? []) !!},
+                    datasets: [{
+                        data: {!! json_encode($stats['chart_data'] ?? []) !!},
+                        backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545'],
+                        borderWidth: 2
+                    }]
                 }
-            }
-        });
+            });
+        }
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @endif
 </body>
 </html>

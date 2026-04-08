@@ -10,21 +10,21 @@ class Vente extends Model
     use HasFactory;
 
     /**
-     * Les attributs qui peuvent être assignés en masse (Mass Assignment).
-     * Note pour le Groupe 05 : 'montant_recu' est désormais inclus pour
-     * corriger l'erreur SQL "Field doesn't have a default value".
+     * Les attributs qui peuvent être assignés en masse.
+     * Mise à jour pour le Groupe 05 : On inclut tous les champs de la migration.
      */
     protected $fillable = [
         'boisson_id',
         'user_id',
         'quantite',
         'prix_total',
-        'montant_recu', // Ajouté pour correspondre à la structure de la table
+        'montant_recu',
+        'monnaie_rendue', // Ajouté pour correspondre à ta migration
+        'mode_paiement',  // Ajouté pour correspondre à ta migration
     ];
 
     /**
      * Relation avec la table boissons
-     * Une vente appartient à une boisson spécifique.
      */
     public function boisson()
     {
@@ -33,7 +33,6 @@ class Vente extends Model
 
     /**
      * Relation avec la table users
-     * Une vente est enregistrée par un utilisateur (Vendeur/Chef de projet).
      */
     public function user()
     {
