@@ -13,6 +13,7 @@
                 <div class="card-body bg-light">
                     <div class="row text-center mt-4">
                         
+                        <?php // STOCK BOISSONS ?>
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 shadow-sm border-primary">
                                 <div class="card-body">
@@ -23,30 +24,18 @@
                             </div>
                         </div>
 
-<<<<<<< HEAD
+                        <?php // MODULE VENTES ?>
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 shadow-sm border-success">
                                 <div class="card-body">
                                     <h5 class="card-title text-success">💰 Ventes</h5>
                                     <p class="card-text">Enregistrer et consulter l'historique des ventes.</p>
-                                    <a href="#" class="btn btn-outline-success w-100">Bientôt disponible</a>
+                                    <a href="{{ route('ventes.index') }}" class="btn btn-outline-success w-100">Accéder</a>
                                 </div>
                             </div>
                         </div>
-=======
-                       {{-- 2. MODULE VENTES --}}
-<div class="col-md-3 mb-4">
-    <div class="card h-100 shadow-sm border-success">
-        <div class="card-body">
-            <h5 class="card-title text-success">💰 Ventes</h5>
-            <p class="card-text small">Enregistrer et consulter l'historique des ventes.</p>
-            // Le lien pointe maintenant vers la liste des ventes
-            <a href="{{ route('ventes.index') }}" class="btn btn-outline-success w-100">Accéder</a>
-        </div>
-    </div>
-</div>
->>>>>>> d0042544181037b1bae9946a6a6d183528eadbb5
 
+                        <?php // PROFIL ?>
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 shadow-sm border-info">
                                 <div class="card-body">
@@ -57,6 +46,7 @@
                             </div>
                         </div>
 
+                        <?php // UTILISATEURS ?>
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 shadow-sm border-warning">
                                 <div class="card-body">
@@ -68,7 +58,7 @@
                         </div>
 
                     </div>
-                    </div>
+                </div>
             </div>
         </div>
     </div>
