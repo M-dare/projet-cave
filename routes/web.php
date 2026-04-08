@@ -6,6 +6,7 @@ use App\Http\Controllers\BoissonController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VenteController; // Importation du contrôleur ventes
 
 // 1. ACCÈS PUBLIC
 Route::get('/', function () {
@@ -24,11 +25,14 @@ Route::middleware(['auth'])->group(function () {
     // Gestion des boissons (Inventaire de la cave)
     Route::resource('boissons', BoissonController::class);
 
-    // Gestion du Profil (Tes modifications Abdoul)
+    // Gestion du Profil
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profil', [ProfileController::class, 'update'])->name('profile.update');
 
-    // Module Walid : Gestion des Utilisateurs
-    Route::resource('users', UserController::class);
+    // Gestion des utilisateurs
+    Route::resource('users', UserController::class); 
 
+    // Gestion des ventes
+    Route::resource('ventes', VenteController::class);
+    
 });

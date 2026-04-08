@@ -6,35 +6,36 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    //Exécuter la migration.
+    // Exécuter la migration pour créer la table des ventes
     public function up(): void
     {
         Schema::create('ventes', function (Blueprint $table) {
-            $table->id(); // Ceci crée automatiquement l'ID de la vente (id_vente)
+            // ID de la vente
+            $table->id();
 
-            //RELATION AVEC L'UTILISATEUR (Le Gérant)
-            // On lie la vente à l'utilisateur qui l'a saisie.
-            // La table 'users' est créée par défaut par Laravel.
+            // Lien avec la table boissons
+            $table->foreignId('boisson_id')
+                  ->constrained('boissons')
+                  ->onDelete('cascade');
+
+            // Lien avec l'utilisateur (le gérant)
             $table->foreignId('user_id')
                   ->constrained('users')
                   ->onDelete('cascade');
 
-            //RELATION AVEC LA COMMANDE
-            $table->foreignId('commande_id')
-                  ->constrained('commandes')
-                  ->onDelete('cascade');
-
-            //ATTRIBUTS FINANCIERS
-            $table->decimal('montant_total', 10, 2);
-            $table->decimal('montant_recu', 10, 2);
-            $table->decimal('monnaie_rendue', 10, 2)->default(0);
-            $table->string('mode_paiement')->default('Espèces');
+            // Informations de la transaction
+            $table->integer('quantite'); // Nombre de bouteilles
+            $table->decimal('prix_total', 10, 2); // Prix total calculé
+            $table->decimal('montant_recu', 10, 2); // Argent donné par le client
+            $table->decimal('monnaie_rendue', 10, 2)->default(0); // Reste à rendre
+            $table->string('mode_paiement')->default('Espèces'); // Mode de règlement
             
-            $table->timestamps(); // Date et heure précises de la vente
+            // Dates de création et modification
+            $table->timestamps();
         });
     }
-    //Annuler la migration.
-    
+
+    // Annuler la migration (Supprimer la table)
     public function down(): void
     {
         Schema::dropIfExists('ventes');

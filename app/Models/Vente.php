@@ -2,29 +2,41 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Vente extends Model
 {
+    use HasFactory;
+
+    /**
+     * Les attributs qui peuvent être assignés en masse (Mass Assignment).
+     * Note pour le Groupe 05 : 'montant_recu' est désormais inclus pour
+     * corriger l'erreur SQL "Field doesn't have a default value".
+     */
     protected $fillable = [
-        'user_id', 
-        'commande_id', 
-        'montant_total', 
-        'montant_recu', 
-        'monnaie_rendue', 
-        'mode_paiement'
+        'boisson_id',
+        'user_id',
+        'quantite',
+        'prix_total',
+        'montant_recu', // Ajouté pour correspondre à la structure de la table
     ];
 
-    // La vente est liée au gérant (user)
-    public function user(): BelongsTo
+    /**
+     * Relation avec la table boissons
+     * Une vente appartient à une boisson spécifique.
+     */
+    public function boisson()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Boisson::class);
     }
 
-    // La vente est liée à une commande
-    public function commande(): BelongsTo
+    /**
+     * Relation avec la table users
+     * Une vente est enregistrée par un utilisateur (Vendeur/Chef de projet).
+     */
+    public function user()
     {
-        return $this->belongsTo(Commande::class);
+        return $this->belongsTo(User::class);
     }
 }

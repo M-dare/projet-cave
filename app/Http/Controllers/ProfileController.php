@@ -8,18 +8,26 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
+<<<<<<< HEAD
     /**
      * Affiche le formulaire de modification du profil.
      */
+=======
+    // / Affiche le formulaire de modification du profil. Accessible via GET /profil
+>>>>>>> d0042544181037b1bae9946a6a6d183528eadbb5
     public function edit()
     {
         $user = Auth::user();
         return view('profile.edit', compact('user'));
     }
 
+<<<<<<< HEAD
     /**
      * Met à jour le profil et le mot de passe.
      */
+=======
+    // Enregistre les modifications dans la base de données. Accessible via POST /profil
+>>>>>>> d0042544181037b1bae9946a6a6d183528eadbb5
     public function update(Request $request)
     {
         $user = Auth::user();
