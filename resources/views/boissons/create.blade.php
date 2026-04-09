@@ -23,11 +23,13 @@
                         <div class="mb-3">
                             <label for="type" class="form-label">Type / Catégorie</label>
                             <select name="type" id="type" class="form-select">
-                                <option value="Sucrerie">Sucrerie</option>
-                                <option value="Alcool">Alcool</option>
-                                <option value="Eau">Eau</option>
-                                <option value="Jus">Jus</option>
-                            </select>
+    <option value="Alcool">Alcool</option>
+    <option value="Bière">Bière</option>
+    <option value="Eau">Eau</option>
+    <option value="Energie">Energie</option>
+    <option value="Jus">Jus</option>
+    <option value="Sucrerie">Sucrerie</option>
+</select>
                         </div>
 
                         <div class="row">

@@ -39,11 +39,13 @@
                         <div class="mb-3">
                             <label for="type" class="form-label">Type / Catégorie</label>
                             <select name="type" id="type" class="form-select">
-                                <option value="Sucrerie" {{ $boisson->type == 'Sucrerie' ? 'selected' : '' }}>Sucrerie</option>
-                                <option value="Alcool" {{ $boisson->type == 'Alcool' ? 'selected' : '' }}>Alcool</option>
-                                <option value="Eau" {{ $boisson->type == 'Eau' ? 'selected' : '' }}>Eau</option>
-                                <option value="Jus" {{ $boisson->type == 'Jus' ? 'selected' : '' }}>Jus</option>
-                            </select>
+    <option value="Alcool" {{ $boisson->type == 'Alcool' ? 'selected' : '' }}>Alcool</option>
+    <option value="Bière" {{ $boisson->type == 'Bière' ? 'selected' : '' }}>Bière</option>
+    <option value="Eau" {{ $boisson->type == 'Eau' ? 'selected' : '' }}>Eau</option>
+    <option value="Energie" {{ $boisson->type == 'Energie' ? 'selected' : '' }}>Energie</option>
+    <option value="Jus" {{ $boisson->type == 'Jus' ? 'selected' : '' }}>Jus</option>
+    <option value="Sucrerie" {{ $boisson->type == 'Sucrerie' ? 'selected' : '' }}>Sucrerie</option>
+</select>
                         </div>
 
                         <div class="row">

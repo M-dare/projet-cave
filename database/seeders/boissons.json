@@ -1,0 +1,107 @@
+[
+    {
+        "nom": "Vin Blanc Sec 75cl",
+        "type": "Alcool",
+        "quantite": 40,
+        "prix_unitaire": 4500,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Vin Rouge Grand Siècle",
+        "type": "Alcool",
+        "quantite": 60,
+        "prix_unitaire": 5000,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Liqueur de Gingembre",
+        "type": "Alcool",
+        "quantite": 56,
+        "prix_unitaire": 3000,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Brakina 65cl",
+        "type": "Bière",
+        "quantite": 50,
+        "prix_unitaire": 700,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Beaufort Lager 65cl",
+        "type": "Bière",
+        "quantite": 34,
+        "prix_unitaire": 800,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Castel Beer 65cl",
+        "type": "Bière",
+        "quantite": 40,
+        "prix_unitaire": 700,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Eau Lafi 1.5L",
+        "type": "Eau",
+        "quantite": 200,
+        "prix_unitaire": 400,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Eau Babali 0.5L",
+        "type": "Eau",
+        "quantite": 500,
+        "prix_unitaire": 250,
+        "categorie_id": 1
+    },
+    {
+        "nom": "XXL Energy 33cl",
+        "type": "Energie",
+        "quantite": 60,
+        "prix_unitaire": 500,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Vody 25cl",
+        "type": "Energie",
+        "quantite": 40,
+        "prix_unitaire": 1000,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Jus d'Ananas (Local)",
+        "type": "Jus",
+        "quantite": 100,
+        "prix_unitaire": 1000,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Jus de Mangue (Burkina)",
+        "type": "Jus",
+        "quantite": 80,
+        "prix_unitaire": 1000,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Youki Orange 60cl",
+        "type": "Sucrerie",
+        "quantite": 150,
+        "prix_unitaire": 500,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Coca-Cola 30cl (VAP)",
+        "type": "Sucrerie",
+        "quantite": 150,
+        "prix_unitaire": 400,
+        "categorie_id": 1
+    },
+    {
+        "nom": "Fanta Orange 30cl",
+        "type": "Sucrerie",
+        "quantite": 120,
+        "prix_unitaire": 400,
+        "categorie_id": 1
+    }
+]

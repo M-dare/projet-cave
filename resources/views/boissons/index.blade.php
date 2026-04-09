@@ -15,7 +15,6 @@
 
     {{-- 2. STATISTIQUES ET GRAPHIQUE --}}
     <div class="row mb-4">
-        {{-- Les 3 Widgets à gauche --}}
         <div class="col-md-8">
             <div class="row h-100">
                 <div class="col-md-4 mb-3">
@@ -41,7 +40,6 @@
             </div>
         </div>
 
-        {{-- Le Graphique à droite --}}
         <div class="col-md-4 mb-3">
             <div class="card shadow border-0 p-3 text-center h-100">
                 <h6 class="fw-bold mb-2">Répartition par Type</h6>
@@ -49,6 +47,31 @@
                     <canvas id="categoryChart"></canvas>
                 </div>
             </div>
+        </div>
+    </div>
+
+    {{-- NOUVEAU : BARRE DE RECHERCHE AVEC BOUTON RAFRAICHIR --}}
+    <div class="card shadow border-0 mb-4">
+        <div class="card-body">
+            <form action="{{ route('boissons.index') }}" method="GET">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted">🔍</i>
+                    </span>
+                    <input type="text" name="search" class="form-control border-start-0" 
+                           placeholder="Rechercher une boisson par nom ou par type..." 
+                           value="{{ request('search') }}">
+                    
+                    <button class="btn btn-dark px-4" type="submit">Filtrer</button>
+                    
+                    {{-- Le bouton Rafraîchir n'apparaît que si on a fait une recherche --}}
+                    @if(request('search'))
+                        <a href="{{ route('boissons.index') }}" class="btn btn-outline-secondary" title="Rafraîchir la liste">
+                            🔄 Annuler
+                        </a>
+                    @endif
+                </div>
+            </form>
         </div>
     </div>
 
@@ -97,7 +120,11 @@
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="5" class="text-center py-4">Aucune boisson trouvée.</td></tr>
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                <i>Aucune boisson ne correspond à votre recherche.</i>
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -111,21 +138,38 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const ctx = document.getElementById('categoryChart').getContext('2d');
+        
+        // On récupère les données envoyées par le Controller
         const dataBoissons = {!! json_encode($boissons) !!};
         
-        // Calcul des données pour le graphique
+        // 1. Calcul des totaux par type (pour le graphique)
         const counts = {};
         dataBoissons.forEach(b => {
             counts[b.type] = (counts[b.type] || 0) + parseInt(b.quantite);
         });
 
+        // 2. Ta palette triée par ordre alphabétique
+        const colorPalette = {
+            'Alcool':   '#dc3545', // Rouge
+            'Bière':    '#198754', // Vert
+            'Eau':      '#0d6efd', // Bleu
+            'Energie':  '#343a40', // Noir
+            'Jus':      '#6610f2', // Violet
+            'Sucrerie': '#ffc107'  // Jaune
+        };
+
+        // 3. Récupérer les labels et les couleurs correspondantes
+        const labels = Object.keys(counts);
+        const dynamicColors = labels.map(label => colorPalette[label] || '#bcbcbc');
+
+        // 4. Génération du graphique
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: Object.keys(counts),
+                labels: labels,
                 datasets: [{
                     data: Object.values(counts),
-                    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6610f2'],
+                    backgroundColor: dynamicColors,
                     borderWidth: 1
                 }]
             },
@@ -133,7 +177,7 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false } // On cache la légende pour gagner de la place
+                    legend: { display: false } // On cache la légende pour garder le design épuré
                 }
             }
         });
